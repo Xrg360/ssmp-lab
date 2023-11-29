@@ -1,0 +1,4 @@
+LDA 00
+STA 0C
+ADD 18
+SUB 1C
