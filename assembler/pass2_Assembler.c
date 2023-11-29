@@ -158,7 +158,9 @@ int main() {
     fclose(tempFile);
 
     // Rename the temporary file to the object program file
-    rename("temp.txt", "objprgm.txt");
+    rename("temp.txt", "objprgmnew.txt");
 
     return 0;
 }
+
+//end
