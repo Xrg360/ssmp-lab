@@ -150,3 +150,92 @@ int main()
     // add print functions here to print the output
     return 0;
 }
+
+
+// DEFTAB.txt (to be created by you, will be given by the tchr)
+/*
+COPY START NULL
+RDBUFF MACRO &INDEV,&BUFADR,&RECLTH
+- CLEAR X
+- CLEAR A
+- CLEAR S
+- +LDT #4096
+- TD =X'?1'
+- JEQ *-3
+- RD =X'?1'
+- COMPR A,S
+- JEQ *+11
+- STCH ?2,X
+- TIXR T
+- JLT *-19
+- STX ?3
+- MEND -
+*/
+// input.txt (to be created by you, will be given by the tchr)
+/*
+COPY START NULL
+RDBUFF MACRO &INDEV,&BUFADR,&RECLTH
+- CLEAR X
+- CLEAR A
+- CLEAR S
+- +LDT #4096
+- TD =X'&INDEV'
+- JEQ *-3
+- RD =X'&INDEV'
+- COMPR A,S
+- JEQ *+11
+- STCH BUFADR,X
+- TIXR T
+- JLT *-19
+- STX RECLTH
+- MEND -
+FIRST STL RETADR
+CLOOP RDBUFF F1,BUFFER,LENGTH
+- LDA LENGTH
+- COMP #0
+- JEQ ENDFIL
+EOF BYTE C'EOF'
+THREE WORD 3
+RETADR RESW 1
+LENGTH RESW 1
+BUFFER RESB 4096
+- END FIRST
+*/
+// NAMTAB.txt (created by the program)
+/*
+RDBUFF
+*/
+// expanded.txt (created by the program)
+/*
+COPY START NULL
+FIRST STL RETADR
+. RDBUFF F1,BUFFER,LENGTH
+- CLEAR X
+- CLEAR A
+- CLEAR S
+- +LDT #4096
+- TD ='F1'
+- JEQ *-3
+- RD ='F1'
+- COMPR A,S
+- JEQ *+11
+- STCH BUFFER,X
+- TIXR T
+- JLT *-19
+- STX LENGTH
+- LDA LENGTH
+- COMP #0
+- JEQ ENDFIL
+EOF BYTE C'EOF'
+THREE WORD 3
+RETADR RESW 1
+LENGTH RESW 1
+BUFFER RESB 4096
+- END FIRST
+*/
+// ARGTAB.txt (created by the program)
+/*
+1 F1
+2 BUFFER
+3 LENGTH
+*/
