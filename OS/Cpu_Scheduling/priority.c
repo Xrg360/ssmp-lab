@@ -3,7 +3,7 @@
 struct process
 {
     char name[20];
-    int at, tt, bt, wt, status, ct, pr;
+    int at, tt, bt, priority, wt, status, ct;
 } p[20], temp;
 struct done
 {
@@ -25,8 +25,8 @@ void main()
         scanf("%d", &p[i].at);
         printf("BURST TIME : ");
         scanf("%d", &p[i].bt);
-        printf("PRIORITY : ");
-        scanf("%d", &p[i].pr);
+        printf("PRIORITY : "); // 1 is the highest priority.
+        scanf("%d", &p[i].priority);
         p[i].status = 0;
     }
     for (i = 0, ls = 0, num = 0, idle = 0; ls < n;)
@@ -40,7 +40,7 @@ void main()
                     min = j;
                     fnd = 1;
                 }
-                else if ((p[min].pr > p[j].pr) || (p[min].pr == p[j].pr && p[min].at > p[j].at))
+                else if (fnd != 0 && p[min].priority > p[j].priority) // ONLY DIFFERENCE BETWEEN THIS AND SJF.C
                 {
                     min = j;
                 }
@@ -101,3 +101,54 @@ void main()
     printf("\nAVERAGE WAITING TIME : %f", (twt / n));
     printf("\nAVERAGE TURNAROUND TIME : %f\n", (ttt / n));
 }
+/*
+ENTER THE NUMBER OF PROCESSES : 5
+
+ENTER DETAILS OF PROCESS 1
+PROCESS NAME : P1
+ARRIVAL TIME : 0
+BURST TIME : 10
+PRIORITY : 3
+
+ENTER DETAILS OF PROCESS 2
+PROCESS NAME : P2
+ARRIVAL TIME : 0
+BURST TIME : 1
+PRIORITY : 1
+
+ENTER DETAILS OF PROCESS 3
+PROCESS NAME : P3
+ARRIVAL TIME : 0
+BURST TIME : 2
+PRIORITY : 4
+
+ENTER DETAILS OF PROCESS 4
+PROCESS NAME : P4
+ARRIVAL TIME : 0
+BURST TIME : 1
+PRIORITY : 5
+
+ENTER DETAILS OF PROCESS 5
+PROCESS NAME : P5
+ARRIVAL TIME : 0
+BURST TIME : 5
+PRIORITY : 2
+
+PROCESS NAME    COMPLETION TIME (ms)    WAITING TIME (ms)       TURNAROUND TIME (ms)
+
+    P1                  16                      6                       16
+    P2                  1                       0                       1
+    P3                  18                      16                      18
+    P4                  19                      18                      19
+    P5                  6                       1                       6
+
+
+GANTT CHART
+        --------------------------------------------------------------------
+        |P2     |P5     |P1     |P3     |P4      |
+        --------------------------------------------------------------------
+        0       1       6       16      18      19
+
+AVERAGE WAITING TIME : 8.200000
+AVERAGE TURNAROUND TIME : 12.000000
+*/
