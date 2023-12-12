@@ -1,4 +1,4 @@
-# SSMP-lab Repository
+# KTU S5 SSMP-lab Repository
 
 ## Overview
 This repository contains all the necessary files for the KTU S5 SSMP-LAB.
