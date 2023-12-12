@@ -27,7 +27,7 @@ void main()
             {
                 if (opnd[0] == '&')
                 {
-                    (pos, pos1, 5);
+                    sprintf(pos1, "%d", pos);
                     strcpy(pos2, "?");
                     strcpy(opnd, strcat(pos2, pos1));
                     pos = pos + 1;

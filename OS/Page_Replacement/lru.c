@@ -58,7 +58,7 @@ void main()
         for (j = 0; j < f; j++)
         {
             if (frame[j].content != -1)
-                printf("%d\t", frame[j].cnt);
+                printf("%d\t", frame[j].count);
         }
         printf("\n");
     }

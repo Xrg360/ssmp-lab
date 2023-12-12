@@ -1,0 +1,43 @@
+ASSUME CS:CODE,DS:DATA
+
+DATA SEGMENT
+MYARRAY DW 3 DUP(0) ;DECLARE AN ARRAY WITH 3 ELEMENTS
+DATA ENDS
+;In MASM programming, the `DUP` directive is used to define multiple instances of a data item. 
+;In the case of `MYARRAY DW 3 DUP(0)`, it means that `MYARRAY` is an array of 3 words (16-bit values),
+;and each element is initialized with the value 0.
+;So, `MYARRAY DW 3 DUP(0)` is specifying that the array should be duplicated 3 times, 
+;and each element should be initialized with the value 0.
+
+CODE SEGMENT
+START: MOV AX, DATA
+MOV DS,AX
+MOV SI,OFFSET MYARRAY ;SAME AS LEA SI,MYARRAY
+; INSERT FIRST ELEMENT
+MOV AX,0004H
+MOV [SI],AX
+ADD SI,02H
+; INSERT SECOND ELEMENT
+MOV AX,0002H
+MOV [SI],AX
+ADD SI,02H
+; INSERT THIRD ELEMENT
+MOV AX,0008H
+MOV [SI],AX
+ADD SI,02H
+; INITILIASE BX,CX,DX
+MOV BX,0000H ; FLAG
+MOV CX,0003H ; COUNT
+MOV DX,0002H ; ELEMENT TO BE SEARCHED
+MOV SI,OFFSET MYARRAY ;SAME AS LEA SI,MYARRAY
+L1: MOV AX,[SI] 
+CMP AX,DX
+JE FINAL ; JE-JUMP IF EQUAL
+ADD SI,02H
+LOOP L1
+INT 03H
+FINAL:
+MOV BX,0001H ; IF ELEMENT IS FOUND => INCREMENT BX
+INT 03H
+CODE ENDS
+END START

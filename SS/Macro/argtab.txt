@@ -1,3 +1,2 @@
-F1
-BUFFER
-LENGTH
+N1
+N2
