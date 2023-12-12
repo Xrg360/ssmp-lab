@@ -1,26 +1,32 @@
 #include <stdio.h>
+
 int n, m, i, j, h, p, temp, k, total = 0;
-int t[100], a[100], diff[100];
+int t[100], a[100], diff; // Declare variables and arrays
+
 void main()
 {
     printf("ENTER THE NUMBER OF TRACKS : ");
-    scanf("%d", &n);
+    scanf("%d", &n); // Get the number of tracks from the user
+
     printf("ENTER THE HEAD POINTER POSITION : ");
-    scanf("%d", &h);
+    scanf("%d", &h); // Get the initial head pointer position from the user
+
     printf("ENTER THE TRACKS TO BE TRAVERSED : ");
     for (i = 0; i < n; i++)
     {
-        scanf("%d", &t[i]);
+        scanf("%d", &t[i]); // Get the tracks to be traversed from the user
     }
-    t[n + 2] = 199;
+
+    t[n + 2] = 199; // Add boundary tracks to the array
     t[n + 1] = 0;
     t[n] = h;
     n = n + 3;
+
     for (i = 0; i < n; i++)
     {
         for (j = 0; j < n - i - 1; j++)
         {
-            if (t[j] > t[j + 1])
+            if (t[j] > t[j + 1]) // Sort the tracks in ascending order
             {
                 temp = t[j];
                 t[j] = t[j + 1];
@@ -28,6 +34,7 @@ void main()
             }
         }
     }
+
     for (i = 0; i < n; i++)
     {
         if (t[i] == h)
@@ -36,36 +43,24 @@ void main()
             break;
         }
     }
-    if (h < (199 - h))
+    for (i = k; i < n; i++, p++)
     {
-        for (i = k; i >= 0; i--, p++)
-        {
-            a[p] = t[i];
-        }
-        for (i = n - 1; i > k; i--, p++)
-        {
-            a[p] = t[i];
-        }
-    }
-    else
+        a[p] = t[i];
+    } // Traverse the tracks in the appropriate direction (Assuming Right)
+    for (i = 0; i <= k - 1; i++, p++)
     {
-        for (i = k; i < n; i++, p++)
-        {
-            a[p] = t[i];
-        }
-        for (i = 0; i < k; i++, p++)
-        {
-            a[p] = t[i];
-        }
-    }
+        a[p] = t[i];
+    } // Traverse the tracks in the remaining direction
+
     printf("TRAVERSED ORDER : ");
     for (i = 0; i < p; i++)
     {
-        printf("%d => ", a[i]);
+        printf("%d => ", a[i]); // Print the order of traversed tracks
     }
+
     for (total = 0, j = 0; j < p - 1; j++)
     {
-        int diff = 0;
+        diff = 0;
         if (a[j] > a[j + 1])
         {
             diff = a[j] - a[j + 1];
@@ -74,7 +69,8 @@ void main()
         {
             diff = a[j + 1] - a[j];
         }
-        total = total + diff;
+        total = total + diff; // Calculate the total head movements
     }
-    printf("\b\b\b.  \nTOTAL HEAD MOVEMENTS : %d\n", total);
+
+    printf("\b\b\b.  \nTOTAL HEAD MOVEMENTS : %d\n", total); // Print the total head movements
 }
