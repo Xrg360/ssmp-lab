@@ -1,8 +1,9 @@
-# ssmp-lab
-## this repository contains all the necessary files for the KTU S5 SSMP-LAB
+# ssmp-lab Repository
 
+## Overview
+This repository contains all the necessary files for the KTU S5 SSMP-LAB.
 
-this repo could be quickly indexed as
-###[OS experiments](https://github.com/Xrg360/ssmp-lab/tree/main/OS)
-###[SS experiments](https://github.com/Xrg360/ssmp-lab/tree/main/SS)
-###[MPMC experiments](https://github.com/Xrg360/ssmp-lab/tree/main/MPMC)
+## Experiments
+- [Operating Systems Experiments](https://github.com/Xrg360/ssmp-lab/tree/main/OS)
+- [System Software Experiments](https://github.com/Xrg360/ssmp-lab/tree/main/SS)
+- [Microprocessor and Microcontroller Experiments](https://github.com/Xrg360/ssmp-lab/tree/main/MPMC)
