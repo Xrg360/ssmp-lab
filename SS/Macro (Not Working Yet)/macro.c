@@ -1,240 +1,82 @@
 #include <stdio.h>
 #include <string.h>
-int EXPANDING = 0; // 0: false, 1: true
-char a[50], b[50], c[50];
-FILE *input, *expanded, *namtab, *deftab, *argtab;
-// Function to search for an macro name in NAMTAB
-// If found, return 1
-// if not found, return 0
-int macroSearch(char a[100])
+#include <stdlib.h>
+void main()
 {
-    FILE *macro;
-    macro = fopen("NAMTAB.txt", "r");
-    char e[100], temp[100], op[5];
-    temp[0] = '\0';
-    fscanf(macro, "%s", e);
-    while (strcmp(temp, e) != 0)
+    FILE *f1, *f2, *f3, *f4, *f5;
+    int len, i, pos = 1;
+    char
+        arg[20],
+        mne[20], opnd[20], la[20], name[20],
+        mne1[20], opnd1[20], pos1[10], pos2[10];
+    f1 = fopen("input.txt", "r");
+    f2 = fopen("namtab.txt", "w+");
+    f3 = fopen("deftab.txt", "w+");
+    f4 = fopen("argtab.txt", "w+");
+    f5 = fopen("op.txt", "w+");
+    fscanf(f1, "%s%s%s", la, mne, opnd);
+    while (strcmp(mne, "END") != 0)
     {
-        strcpy(temp, e);
-        // check if a is in macro file
-        if (strcmp(e, a) == 0)
+        if (strcmp(mne, "MACRO") == 0)
         {
-            fclose(macro);
-            return 1;
-        }
-        fscanf(macro, "%s", e);
-    }
-    fclose(macro);
-    return 0;
-}
-// Not the actual way of doing it. You need to get the argument from ARGTAB based on the position and replace it in the line
-// Using an easy method used in teachers code, hope thats allowed
-void substituteArguments()
-{
-    if (strcmp(c, "=X'?1'") == 0)
-    {
-        strcpy(c, "='F1'");
-    }
-    else if (strcmp(c, "?2,X") == 0)
-    {
-        strcpy(c, "BUFFER,X");
-    }
-    else if (strcmp(c, "?3") == 0)
-    {
-        strcpy(c, "LENGTH");
-    }
-}
-void getLine()
-{
-    if (EXPANDING == 1)
-    {
-        fscanf(deftab, "%s %s %s", a, b, c);
-        substituteArguments();
-    }
-    else
-    {
-        fscanf(input, "%s %s %s", a, b, c);
-    }
-}
-// No need to define, we are given with DEFTAB file, means defining work is already done.
-// Just write to namtab, go to end of the macro (MEND) and read next line
-void define()
-{
-    // open namtab in append mode
-    fprintf(namtab, "%s\n", a);
-    while (strcmp(b, "MEND") != 0)
-    {
-        fscanf(input, "%s %s %s", a, b, c);
-    }
-}
-// V--------- NEW ADDITION
-void writeArguments()
-{
-    // write c to argument. C could be of the format F1,BUFFER,LENGTH. We need to write it as 1 F1, 2 BUFFER, 3 LENGTH
-    int i = 0, count = 1;
-    fprintf(argtab, "%d ", count);
-    for (i = 0; i < strlen(c); i++)
-    {
-        if (c[i] == ',')
-        {
-            fprintf(argtab, "\n");
-            count++;
-            fprintf(argtab, "%d ", count);
+            fprintf(f2, "%s\n", la);
+            fseek(f2, SEEK_SET, 0);
+            fprintf(f3, "%s\t%s\n", la, opnd);
+            fscanf(f1, "%s%s%s", la, mne, opnd);
+            while (strcmp(mne, "MEND") != 0)
+            {
+                if (opnd[0] == '&')
+                {
+                    (pos, pos1, 5);
+                    strcpy(pos2, "?");
+                    strcpy(opnd, strcat(pos2, pos1));
+                    pos = pos + 1;
+                }
+                fprintf(f3, "%s\t%s\n", mne, opnd);
+                fscanf(f1, "%s%s%s", la, mne, opnd);
+            }
+            fprintf(f3, "%s", mne);
         }
         else
         {
-            fprintf(argtab, "%c", c[i]);
+            fscanf(f2, "%s", name);
+            if (strcmp(mne, name) == 0)
+            {
+                len = strlen(opnd);
+                for (i = 0; i < len; i++)
+                {
+                    if (opnd[i] != ',')
+                        fprintf(f4, "%c", opnd[i]);
+                    else
+                        fprintf(f4, "\n");
+                }
+                fseek(f3, SEEK_SET, 0);
+                fseek(f4, SEEK_SET, 0);
+                fscanf(f3, "%s%s", mne1, opnd1);
+                fprintf(f5, ".\t%s\t%s\n", mne1, opnd);
+                fscanf(f3, "%s%s", mne1, opnd1);
+                while (strcmp(mne1, "MEND") != 0)
+                {
+                    if ((opnd[0] == '?'))
+                    {
+                        fscanf(f4, "%s", arg);
+                        fprintf(f5, "-\t%s\t%s\n", mne1, arg);
+                    }
+                    else
+                        fprintf(f5, "-\t%s\t%s\n", mne1, opnd1);
+                    fscanf(f3, "%s%s", mne1, opnd1);
+                }
+            }
+            else
+                fprintf(f5, "%s\t%s\t%s\n", la, mne, opnd);
         }
+        fscanf(f1, "%s%s%s", la, mne, opnd);
     }
+    fprintf(f5, "%s\t%s\t%s", la, mne, opnd);
+    fclose(f1);
+    fclose(f2);
+    fclose(f3);
+    fclose(f4);
+    fclose(f5);
+    printf("Successfull !!! \n");
 }
-void expand()
-{
-    EXPANDING = 1;
-    // write macro call as comment
-    fprintf(expanded, ". %s %s\n", b, c);
-    // write macro arguments to argtab
-    writeArguments(); // <------------------ NEW ADDITION
-    // skip macro prototype
-    getLine();
-    while (strcmp(b, "MACRO") != 0)
-    {
-        getLine();
-    }
-    // read from deftab and write to expanded
-    getLine();
-    while (strcmp(b, "MEND") != 0)
-    {
-        // write to expanded
-        fprintf(expanded, "%s %s %s\n", a, b, c);
-        getLine();
-    }
-    EXPANDING = 0;
-}
-void processLine()
-{
-    int tempInt = macroSearch(b);
-    if (tempInt == 1)
-    {
-        expand();
-    }
-    else if (strcmp(b, "MACRO") == 0)
-    {
-        define();
-    }
-    else
-    {
-        fprintf(expanded, "%s %s %s\n", a, b, c);
-    }
-}
-// Main function
-// Points to note:
-/*
-1. Namtab is created in this program, there is no need to create it
-2. Format the DEFTAB and input file properly. Add `-` and correct spaces
-*/
-int main()
-{
-    // read a file
-    input = fopen("inputnew.txt", "r");
-    deftab = fopen("DEFTAB.txt", "r");
-    namtab = fopen("NAMTAB.txt", "r");
-    expanded = fopen("expanded.txt", "w");
-    argtab = fopen("ARGTAB.txt", "w");
-    fscanf(input, "%s %s %s", a, b, c);
-    fprintf(expanded, "%s %s %s\n", a, b, c);
-    while (strcmp(b, "END") != 0)
-    {
-        getLine();
-        processLine();
-    }
-    // add print functions here to print the output
-    return 0;
-}
-
-// DEFTAB.txt (to be created by you, will be given by the tchr)
-/*
-COPY START NULL
-RDBUFF MACRO &INDEV,&BUFADR,&RECLTH
-- CLEAR X
-- CLEAR A
-- CLEAR S
-- +LDT #4096
-- TD =X'?1'
-- JEQ *-3
-- RD =X'?1'
-- COMPR A,S
-- JEQ *+11
-- STCH ?2,X
-- TIXR T
-- JLT *-19
-- STX ?3
-- MEND -
-*/
-// input.txt (to be created by you, will be given by the tchr)
-/*
-COPY START NULL
-RDBUFF MACRO &INDEV,&BUFADR,&RECLTH
-- CLEAR X
-- CLEAR A
-- CLEAR S
-- +LDT #4096
-- TD =X'&INDEV'
-- JEQ *-3
-- RD =X'&INDEV'
-- COMPR A,S
-- JEQ *+11
-- STCH BUFADR,X
-- TIXR T
-- JLT *-19
-- STX RECLTH
-- MEND -
-FIRST STL RETADR
-CLOOP RDBUFF F1,BUFFER,LENGTH
-- LDA LENGTH
-- COMP #0
-- JEQ ENDFIL
-EOF BYTE C'EOF'
-THREE WORD 3
-RETADR RESW 1
-LENGTH RESW 1
-BUFFER RESB 4096
-- END FIRST
-*/
-// NAMTAB.txt (created by the program)
-/*
-RDBUFF
-*/
-// expanded.txt (created by the program)
-/*
-COPY START NULL
-FIRST STL RETADR
-. RDBUFF F1,BUFFER,LENGTH
-- CLEAR X
-- CLEAR A
-- CLEAR S
-- +LDT #4096
-- TD ='F1'
-- JEQ *-3
-- RD ='F1'
-- COMPR A,S
-- JEQ *+11
-- STCH BUFFER,X
-- TIXR T
-- JLT *-19
-- STX LENGTH
-- LDA LENGTH
-- COMP #0
-- JEQ ENDFIL
-EOF BYTE C'EOF'
-THREE WORD 3
-RETADR RESW 1
-LENGTH RESW 1
-BUFFER RESB 4096
-- END FIRST
-*/
-// ARGTAB.txt (created by the program)
-/*
-1 F1
-2 BUFFER
-3 LENGTH
-*/
