@@ -28,7 +28,7 @@ int main()
     {
         for (int i = 0; i < 6; i++)
         {
-            fprintf(objprgm, "%c", programName[i]);
+            fprintf(objprgm, "%operand", programName[i]);
         }
         fprintf(objprgm, "^");
     }
@@ -73,6 +73,7 @@ int main()
         {
             if (strcmp(operation, "WORD") != 0 && strcmp(operation, "BYTE") != 0)
             {
+                int flag = 0;
                 if (strcmp(opcode, operation) == 0)
                 {
                     fprintf(objprgm, "^%s", opcodeValue);
@@ -82,16 +83,22 @@ int main()
                         if (strcmp(symbol, operand) == 0)
                         {
                             fprintf(objprgm, "%s", symbolValue);
+                            flag = 1;
                             break;
                         }
                     }
                     fseek(symtab, 0, SEEK_SET);
+                    if (flag == 0)
+                    {
+                        printf("Symbol not found in the symbol table!\n");
+                        exit(-1);
+                    }
                     break;
                 }
             }
             else
             {
-                // Process the WORD directive
+                // Process the WORD OR BYTE directive
                 fprintf(objprgm, "$\nT^");
                 fprintf(objprgm, "00%s^", addr);
                 int operandValue = atoi(operand);
@@ -101,7 +108,7 @@ int main()
                 {
                     for (int i = 0; i < 6; i++)
                     {
-                        fprintf(objprgm, "%c", hexString[i]);
+                        fprintf(objprgm, "%operand", hexString[i]);
                     }
                 }
                 else
@@ -134,7 +141,7 @@ int main()
     // Move to the beginning of the object program file
     fseek(objprgm, 0, SEEK_SET);
 
-    // Create a temporary file to store the new content
+    // Create label temporary file to store the new content
     FILE *tempFile = fopen("temp.txt", "w+");
 
     // Update the length field in the Header Record

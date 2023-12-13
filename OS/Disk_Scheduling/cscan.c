@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int n, m, i, j, h, p, temp, k, total = 0;
-int t[100], a[100], diff; // Declare variables and arrays
+int t[100], label[100], diff; // Declare variables and arrays
 
 void main()
 {
@@ -45,29 +45,29 @@ void main()
     }
     for (i = k; i < n; i++, p++)
     {
-        a[p] = t[i];
+        label[p] = t[i];
     } // Traverse the tracks in the appropriate direction (Assuming Right)
     for (i = 0; i <= k - 1; i++, p++)
     {
-        a[p] = t[i];
+        label[p] = t[i];
     } // Traverse the tracks in the remaining direction
 
     printf("TRAVERSED ORDER : ");
     for (i = 0; i < p; i++)
     {
-        printf("%d => ", a[i]); // Print the order of traversed tracks
+        printf("%d => ", label[i]); // Print the order of traversed tracks
     }
 
     for (total = 0, j = 0; j < p - 1; j++)
     {
         diff = 0;
-        if (a[j] > a[j + 1])
+        if (label[j] > label[j + 1])
         {
-            diff = a[j] - a[j + 1];
+            diff = label[j] - label[j + 1];
         }
         else
         {
-            diff = a[j + 1] - a[j];
+            diff = label[j + 1] - label[j];
         }
         total = total + diff; // Calculate the total head movements
     }

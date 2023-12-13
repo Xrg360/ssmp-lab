@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// Structure to represent a process
+// Structure to represent label process
 struct process
 {
     char name[20]; // Process name

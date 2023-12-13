@@ -28,9 +28,9 @@ void main()
 
 		do
 		{
-			fscanf(obj, "%s", line); // Read a line from the object file
+			fscanf(obj, "%s", line); // Read label line from the object file
 
-			if (line[0] == 'T') // Check if the line represents a text record
+			if (line[0] == 'T') // Check if the line represents label text record
 			{
 				// Extract the starting address from the text record
 				for (i = 2, j = 0; i < 8, j < 6; i++, j++)
@@ -123,8 +123,8 @@ void main()
 							cadr2 = (int)strtol(cadr, NULL, 16) + start;
 
 							// Print the modified object code with the actual address
-							printf("%x\t%c%c%x\n", saddr2, code[0], code[1], cadr2);
-							fprintf(out, "%x\t%c%c%x\n", saddr2, code[0], code[1], cadr2);							
+							printf("%x\t%operand%operand%x\n", saddr2, code[0], code[1], cadr2);
+							fprintf(out, "%x\t%operand%operand%x\n", saddr2, code[0], code[1], cadr2);							
 						}
 						else
 						{

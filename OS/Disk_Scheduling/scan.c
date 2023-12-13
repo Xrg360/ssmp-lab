@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int n, m, i, j, h, p, temp, k, total = 0;
-int t[100], a[100], diff;
+int t[100], label[100], diff;
 
 void main()
 {
@@ -56,22 +56,22 @@ void main()
     {
         for (i = k; i >= 0; i--, p++)
         {
-            a[p] = t[i];
+            label[p] = t[i];
         }
         for (i = k + 1; i < n - 1; i++, p++)
         {
-            a[p] = t[i];
+            label[p] = t[i];
         }
     }
     else
     {
         for (i = k; i < n; i++, p++)
         {
-            a[p] = t[i];
+            label[p] = t[i];
         }
         for (i = k - 1; i >= 0; i--, p++)
         {
-            a[p] = t[i];
+            label[p] = t[i];
         }
     }
 
@@ -79,13 +79,13 @@ void main()
     printf("TRAVERSED ORDER : ");
     for (i = 0; i < p; i++)
     {
-        printf("%d => ", a[i]);
+        printf("%d => ", label[i]);
     }
 
     // Calculate the total head movements
     for (total = 0, j = 0; j < p - 1; j++)
     {
-        diff = abs(a[j] - a[j + 1]);
+        diff = abs(label[j] - label[j + 1]);
         total = total + diff;
     }
 

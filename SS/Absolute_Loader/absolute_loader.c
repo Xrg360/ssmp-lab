@@ -9,7 +9,7 @@ void main()
     printf("Enter program name:");
     scanf("%s", name);
     fp = fopen("obj_program.txt", "r");
-    op = fopen("output.txt", "w+");    
+    op = fopen("output.txt", "w+");
     fscanf(fp, "%s", line);
     for (i = 2, j = 0; i < 8, j < 6; i++, j++)
         name1[j] = line[i];
@@ -36,7 +36,7 @@ void main()
                         }
                         code[j] = '\0';
                         printf("%x \t %s\n", staddr1, code);
-                        fprintf(op, "%x \t %s\n", staddr1, code);                        
+                        fprintf(op, "%x \t %s\n", staddr1, code);
                         staddr1 += 0x3;
                     }
                     else
@@ -49,7 +49,7 @@ void main()
                     addr[i] = line[j];
                 addr[i] = '\0';
                 printf("Jump to address: %s\n", addr);
-                fprintf(op,"Jump to address: %s\n", addr);                
+                fprintf(op, "Jump to address: %s\n", addr);
                 break;
             }
         } while (!feof(fp));
@@ -60,5 +60,5 @@ void main()
         exit(-1);
     }
     fclose(fp);
-    fclose(op);    
+    fclose(op);
 }

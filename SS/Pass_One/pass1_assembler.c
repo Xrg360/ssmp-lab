@@ -54,7 +54,7 @@ int main()
     // Process each line until END directive is encountered
     while (strcmp(opcode, "END") != 0)
     {
-        // Check for the presence of a label
+        // Check for the presence of label label
         if (strcmp(label, "-") != 0)
         {
             fseek(symbolTable, SEEK_SET, 0);
@@ -70,7 +70,6 @@ int main()
             }
             fprintf(symbolTable, "%s %x\n", label, locationCounter);
         }
-
         fseek(opcodeTable, SEEK_SET, 0);
         flag = 0;
         // Search for the opcode in the opcode table
