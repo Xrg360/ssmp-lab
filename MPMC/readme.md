@@ -1,5 +1,6 @@
 # How to setup 8086 MASM on DOSBOX
 
+## Check [here](https://github.com/Xrg360/ssmp-lab/blob/main/MPMC/instructions.md) to find instruction on how to assemble and execute the assembly files
 
 ## Step 1) Download the required files
 For setting up the environment download these two files:

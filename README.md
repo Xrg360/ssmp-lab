@@ -3,6 +3,9 @@
 ## Overview
 This repository contains all the necessary files for the KTU S5 SSMP-LAB.
 
+## Instructions
+- [Assembly Execution on 8086 MASM](https://github.com/Xrg360/ssmp-lab/blob/main/MPMC/instructions.md)
+
 ## Experiments
 
 ### Operating Systems Experiments
@@ -23,7 +26,7 @@ This repository contains all the necessary files for the KTU S5 SSMP-LAB.
 - [PASS-1 of a Two Pass Assembler](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Pass_One)
 - [PASS-2 of a Two Pass Assembler](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Pass_Two)
 - [Absolute Loader](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Absolute_Loader)
-- [Relocating Loader](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Relocating_Loader)
+- [Relocating Loader](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Relocation_Loader)
 - [MACRO](https://github.com/Xrg360/ssmp-lab/tree/main/SS/Macro)
 
 ### Microprocessor and Microcontroller Experiments
