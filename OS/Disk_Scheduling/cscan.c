@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int n, m, i, j, h, p, temp, k, total = 0;
 int t[100], label[100], diff; // Declare variables and arrays
@@ -60,16 +61,8 @@ void main()
 
     for (total = 0, j = 0; j < p - 1; j++)
     {
-        diff = 0;
-        if (label[j] > label[j + 1])
-        {
-            diff = label[j] - label[j + 1];
-        }
-        else
-        {
-            diff = label[j + 1] - label[j];
-        }
-        total = total + diff; // Calculate the total head movements
+        diff = abs(label[j + 1] - label[j]); // Calculate the difference between the current and next track
+        total = total + diff;                // Calculate the total head movements
     }
 
     printf("\b\b\b.  \nTOTAL HEAD MOVEMENTS : %d\n", total); // Print the total head movements

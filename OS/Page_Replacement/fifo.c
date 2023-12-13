@@ -52,7 +52,8 @@ void main()
     printf("\nPAGE FAULT : %d\n", cnt);
 }
 
-/* OUTPUT
+/*
+OUTPUT
 
 ENTER THE NUMBER OF PAGES : 5
 ENTER THE PAGE NUMBER 1: 1

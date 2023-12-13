@@ -69,7 +69,7 @@ void main()
         {
             label[p] = t[i];
         }
-        for (i = k - 1; i >= 0; i--, p++)
+        for (i = k - 1; i > 0; i--, p++)
         {
             label[p] = t[i];
         }

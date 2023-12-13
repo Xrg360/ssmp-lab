@@ -1,144 +1,127 @@
 #include <stdio.h>
-#include <string.h>
-int q[100], front = -1, rear = -1;
-struct process
+int i, j, n, time = 0, tq, npthaa; // npthaa = no: process that has already arrived
+float avgtat = 0, avgwt = 0;
+struct Process
 {
-    char name[20];
-    int at, tt, bt, wt, status, left, ct;
-} p[20], temp;
-struct done
-{
-    char name[20];
-    int st, ct;
-} d[20];
-void enqueue(int j)
-{
-    if (front == -1 && rear == -1)
-    {
-        front++;
-    }
-    rear++;
-    q[rear] = j;
-}
-int dequeue()
-{
-    int item;
-    item = q[front];
-    if (front == rear)
-    {
-        front = -1;
-        rear = -1;
-    }
-    else
-    {
-        front++;
-    }
-    return (item);
-}
+    int pid, at, bt, wt, ct, tat, rt, rbt; // rt = run time, rbt = remaining burst time
+} p[30], temp, queue[10];                  // queue is for table
 void main()
 {
-    int n, i, j, idle = 0, k, num, ls, t;
-    float avwt = 0, avtt = 0;
-    printf("ENTER THE NUMBER OF PROCESSES : ");
+    printf("Enter TIme Quanta:");
+    scanf("%d", &tq);
+    printf("Enter No. Process:");
     scanf("%d", &n);
-    for (i = 0; i < n; i++) // Input process details
+    for (i = 0; i < n; i++)
     {
-        printf("\nENTER DETAILS OF PROCESS %d", i + 1);
-        printf("\nPROCESS NAME : ");
-        scanf(" %s", p[i].name);
-        printf("ARRIVAL TIME : ");
+        p[i].pid = i + 1;
+        printf("Enter Arrival Time of Process %d:", i + 1);
         scanf("%d", &p[i].at);
-        printf("BURST TIME : ");
+        printf("Enter Burst Time of Process %d:", i + 1);
         scanf("%d", &p[i].bt);
-        p[i].left = p[i].bt;
-        p[i].status = 0;
+        p[i].rbt = p[i].bt;
     }
-    printf("\nENTER THE TIME QUANTUM : ");
-    scanf("%d", &t);
-
-    for (i = 0, num = 0, ls = 0; ls < n;)
+    // Sorting
+    for (i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++)
+        for (j = 0; j < n - i - 1; j++)
         {
-            if (p[j].status == 0 && p[j].at <= i)
+            if (p[j + 1].at < p[j].at)
             {
-                enqueue(j);
-                p[j].status = 1;
+                temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
             }
         }
-        if (idle == 0 && front == -1)
+    }
+    // Computation
+    for (i = 0; i < n; i++)
+    {
+        if (p[i].rbt > tq)
         {
-            strcpy(d[num].name, "Idle");
-            d[num].st = i;
-            idle = 1;
-            i++;
-        }
-        else if (front != -1)
-        {
-            if (idle == 1)
+            p[i].rt = tq;
+            time += tq;
+            // Calculate the number of process that has already arrived
+            npthaa = 0;
+            for (j = i + 1; j < n; j++)
             {
-                d[num].ct = i;
-                idle = 0;
-                num++;
+                if (p[j].at <= time)
+                    npthaa++;
             }
-            k = dequeue();
-            d[num].st = i;
-            strcpy(d[num].name, p[k].name);
-            if (p[k].left <= t)
+            // Move all after i + npthaa to right side by 1 position
+            for (int j = n - 1; j > i + npthaa; j--)
             {
-                d[num].ct = i + p[k].left;
-                p[k].ct = d[num].ct;
-                i = d[num].ct;
-                p[k].tt = i - p[k].at;
-                p[k].wt = p[k].tt - p[k].bt;
-                p[k].status = 2;
-                ls++;
-                num++;
+                p[j + 1] = p[j];
             }
-            else if (p[k].left > t)
-            {
-                d[num].ct = i + t;
-                i = d[num].ct;
-                p[k].left = p[k].left - t;
-                num++;
-                for (j = 0; j < n; j++)
-                {
-                    if (p[j].status == 0 && p[j].at <= i)
-                    {
-                        enqueue(j);
-                        p[j].status = 1;
-                    }
-                }
-                enqueue(k);
-            }
+            // Push remaining of current process to the vacant space
+            p[i + npthaa + 1] = p[i];
+            p[i + npthaa + 1].rbt = p[i + npthaa + 1].rbt - tq;
+            n++;
         }
         else
         {
-            i++;
+            p[i].rt = p[i].rbt;
+            time += p[i].rbt;
+            p[i].ct = time;
         }
     }
-
-    printf("\nPROCESS NAME\tCOMPLETION TIME (ms)\tWAITING TIME (ms)\tTURNAROUND TIME (ms)\n\n");
+    // Table queue
+    int z = 0;
     for (i = 0; i < n; i++)
     {
-        printf("    %s\t\t\t%d\t\t\t%d\t\t\t%d\n", p[i].name, p[i].ct, p[i].wt, p[i].tt);
-        avwt += p[i].wt;
-        avtt += p[i].tt;
+        // filter by complition time to only have unique process
+        if (p[i].ct != 0)
+        {
+            queue[z] = p[i];
+            queue[z].tat = p[i].ct - p[i].at;
+            queue[z].wt = queue[z].tat - queue[z].bt;
+            avgtat += queue[z].tat;
+            avgwt += queue[z].wt;
+            z++;
+        }
     }
-    printf("\n\nGANTT CHART ");
-    printf("\n\t--------------------------------------------------------------------------\n\t");
-    for (i = 0; i < num; i++)
+    // print table
+    printf(" PID | AT | BT | CT | WT | TAT\n");
+    for (i = 0; i < z; i++)
     {
+        printf(" P%d | %d | %d | %d | %d | %d\n", queue[i].pid, queue[i].at, queue[i].bt, queue[i].ct, queue[i].wt, queue[i].tat);
+    }
+    printf("Avg TAT: %.2f", avgtat / z);
+    printf("\nAvg WT: %.2f", avgwt / z);
+    printf("\n--------------------------------");
+    printf("\nGanttchart");
+    // ganttchart();
+    printf("\n-");
+    for (i = 0; i < n; i++)
+    {
+        printf("-");
+        for (j = 0; j < p[i].rt; j++)
+            printf("-");
+        printf("-");
+    }
+    printf("\n|");
+    for (i = 0; i < n; i++)
+    {
+        printf("%d", p[i].pid);
+        for (j = 0; j < p[i].rt; j++)
+            printf(" ");
         printf("|");
-        printf("%s\t", d[i].name);
     }
-    printf(" |");
-    printf("\n\t--------------------------------------------------------------------------\n\t");
-    for (i = 0; i < num; i++)
+    printf("\n-");
+    for (i = 0; i < n; i++)
     {
-        printf("%d\t", d[i].st);
+        printf("-");
+        for (j = 0; j < p[i].rt; j++)
+            printf("-");
+        printf("-");
     }
-    printf("%d\t", d[num - 1].ct);
-    printf("\n\nAVERAGE WAITING TIME : %f", (avwt / n));
-    printf("\nAVERAGE TURNAROUND TIME : %f\n", (avtt / n));
+    printf("\n0");
+    z = 0;
+    for (i = 0; i < n; i++)
+    {
+        printf(" ");
+        for (j = 0; j < p[i].rt - (z > 9 ? 1 : 0); j++)
+            printf(" ");
+        z += p[i].rt;
+        printf("%d", z);
+    }
 }

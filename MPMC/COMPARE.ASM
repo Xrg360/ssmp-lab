@@ -70,7 +70,7 @@ COMP:
 
 NOT_EQUAL:
     ; Strings are not equal
-    MOV DX, OFFSET MSG2
+    MOV DX, OFFSET MSG2 
     MOV AH, 09H
     INT 21H
 
