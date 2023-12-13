@@ -1,0 +1,1 @@
+# HOW TO SETUP 8086 using DOSBOX
