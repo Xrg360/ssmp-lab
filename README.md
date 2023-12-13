@@ -3,6 +3,9 @@
 ## Overview
 This repository contains all the necessary files for the KTU S5 SSMP-LAB.
 
+## Instructions
+- [Assembly Execution on 8086 MASM](https://github.com/Xrg360/ssmp-lab/blob/main/MPMC/instructions.md)
+
 ## Experiments
 
 ### Operating Systems Experiments
