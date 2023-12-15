@@ -39,7 +39,6 @@ void main()
 
 				// Calculate the actual starting address by adding the user-provided starting address
 				saddr2 = (int)strtol(saddr, NULL, 16) + start;
-
 				mask[0] = '\0';
 
 				// Extract the modification bits from the text record
@@ -123,8 +122,8 @@ void main()
 							cadr2 = (int)strtol(cadr, NULL, 16) + start;
 
 							// Print the modified object code with the actual address
-							printf("%x\t%operand%operand%x\n", saddr2, code[0], code[1], cadr2);
-							fprintf(out, "%x\t%operand%operand%x\n", saddr2, code[0], code[1], cadr2);							
+							printf("%x\t%c%c%x\n", saddr2, code[0], code[1], cadr2);
+							fprintf(out, "%x\t%c%c%x\n", saddr2, code[0], code[1], cadr2);							
 						}
 						else
 						{
